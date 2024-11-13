@@ -1,0 +1,99 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+typedef struct Node {
+    int data;
+    struct Node* next;
+} Node;
+
+Node* createnode(int value) {
+    Node* newnode = (Node*)malloc(sizeof(Node));
+    if (newnode == NULL) {
+        printf("\nMemory allocation failed");
+        exit(1);
+    }
+    newnode->data = value;
+    newnode->next = NULL;
+    return newnode;
+}
+
+Node* insert(Node* head, int value) {
+    Node* newnode = createnode(value);
+    newnode->next = head;
+    return newnode;
+}
+
+Node* sort(Node* head) {
+    Node* temp, *current;
+    int t;
+    current = head;
+    while (current != NULL) {
+        temp = head;
+        while (temp->next != NULL) {
+            if (temp->data > temp->next->data) {
+                t = temp->data;
+                temp->data = temp->next->data;
+                temp->next->data = t;
+            }
+            temp = temp->next;
+        }
+        current = current->next;
+    }
+    return head;
+}
+
+Node* reverse(Node* head) {
+    Node* prev = NULL, * temp, * next;
+    temp = head;
+    while (temp != NULL) {
+        next = temp->next;
+        temp->next = prev;
+        prev = temp;
+        temp = next;
+    }
+    head = prev;
+    return head;
+}
+
+void displayLinkedList(Node* head1, Node* head2) {
+    printf("Linked list1: ");
+    while (head1 != NULL) {
+        printf("%d->", head1->data);
+        head1 = head1->next;
+    }
+    printf("NULL\n");
+
+    printf("Linked List2: ");
+    while (head2 != NULL) {
+        printf("%d->", head2->data);
+        head2 = head2->next;
+    }
+    printf("NULL\n");
+}
+
+int main() {
+    Node* head1 = NULL;
+    Node* head2 = NULL;
+    
+    head1 = insert(head1, 3);
+    head1 = insert(head1, 2);
+    head1 = insert(head1, 1);
+    head1 = insert(head1, 5);
+
+  
+    head2 = insert(head2, 8);
+    head2 = insert(head2, 9);
+    head2 = insert(head2, 2);
+    head2 = insert(head2, 4);
+
+    printf("Before sorting and reversing:\n");
+    displayLinkedList(head1, head2);
+
+    head1 = sort(head1);
+    head2 = reverse(head2);
+
+    printf("\nAfter sorting and reversing:\n");
+    displayLinkedList(head1, head2);
+
+    return 0;
+}
