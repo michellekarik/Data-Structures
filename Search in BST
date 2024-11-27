@@ -1,0 +1,114 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+struct Node{
+    int data;
+    struct Node* right;
+    struct Node* left;
+};
+
+struct Node* createNode(int data)
+{
+
+    struct Node* newNode=(struct Node*)malloc(sizeof(struct Node));
+    newNode->data=data;
+    newNode->right=NULL;
+    newNode->left=NULL;
+    return newNode;
+};
+struct Node* insert(struct Node* root, int data)
+{
+
+    if(root==NULL)
+    {
+
+        return createNode(data);
+    }
+    if(data<root->data)
+    {
+
+        root->left=insert(root->left, data);
+    }
+    else if(data>root->data)
+    {
+
+        root->right=insert(root->right, data);
+    }
+    return root;
+};
+struct Node* search(struct Node* root, int val)
+{
+    if(root==NULL||root->data==val)
+    {
+        return root;
+    }
+    if(val<root->data)
+    {
+        return search(root->left, val);
+    }
+    return search(root->right, val);
+}
+void preOrder(struct Node* root)
+{
+    if(root!=NULL)
+    {
+        printf("%d", root->data);
+        preOrder(root->left);
+        preOrder(root->right);
+    }
+}
+int main()
+{
+    struct Node* root=NULL;
+    int choice, data;
+    while(1)
+    {
+        printf("\nMenu:\n");
+        printf("1.Insert a value into tree\n");
+        printf("2.Search value and preorder root\n");
+        printf("3.Exit\n");
+        printf("enter your choice:\n");
+        scanf("%d", &choice);
+        switch(choice)
+        {
+            case 1:
+            {
+                printf("Enter value: \n");
+                scanf("%d", &data);
+                root=insert(root, data);
+                break;
+
+            }
+            case 2:
+            {
+                printf("Enter val: \n");
+                scanf("%d", &data);
+                if(search(root, data))
+                {
+                    preOrder(root);
+                }
+                else
+                {
+                    printf("Not found\n");
+                }
+
+                break;
+
+            }
+            case 3:
+            {
+                printf("Exiting..\n");
+                exit(0);
+
+            }
+            default:
+            {
+                printf("Invalid choice\n");
+
+            }
+
+        }
+
+    }
+    return 0;
+}
